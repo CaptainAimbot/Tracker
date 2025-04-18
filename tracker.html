@@ -1,45 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checklist</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Python Learning Tracker</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-    .checklist {
-      list-style-type: none;
-      padding: 0;
-    }
-    .checklist li {
-      margin: 10px 0;
-    }
-    .completed {
-      text-decoration: line-through;
-      color: gray;
-    }
+    body { font-family: Arial, sans-serif; background: #0d1117; color: #c9d1d9; padding: 20px; }
+    h1 { color: #58a6ff; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 10px 0; display: flex; align-items: center; }
+    input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+    .done { text-decoration: line-through; color: #8b949e; }
+    button { margin-top: 20px; background: #21262d; color: #58a6ff; border: 1px solid #30363d; padding: 8px 12px; cursor: pointer; }
+    button:hover { background: #30363d; }
   </style>
 </head>
 <body>
-  <h1>Learning Tracker</h1>
-  <ul class="checklist" id="checklist">
-    <li><input type="checkbox" onclick="toggleComplete(this)"> HTML Basics</li>
-    <li><input type="checkbox" onclick="toggleComplete(this)"> CSS Styling</li>
-    <li><input type="checkbox" onclick="toggleComplete(this)"> JavaScript Fundamentals</li>
-    <li><input type="checkbox" onclick="toggleComplete(this)"> React Components</li>
+  <h1>Python Learning Tracker</h1>
+  <ul id="tracker">
+    <li><input type="checkbox" data-topic="Variables">Variables</li>
+    <li><input type="checkbox" data-topic="Data Types">Data Types</li>
+    <li><input type="checkbox" data-topic="If-Else">If-Else</li>
+    <li><input type="checkbox" data-topic="Loops">Loops</li>
+    <li><input type="checkbox" data-topic="Functions">Functions</li>
+    <li><input type="checkbox" data-topic="Lists">Lists</li>
+    <li><input type="checkbox" data-topic="Dictionaries">Dictionaries</li>
+    <li><input type="checkbox" data-topic="File Handling">File Handling</li>
+    <li><input type="checkbox" data-topic="Modules">Modules</li>
+    <li><input type="checkbox" data-topic="OOP">OOP</li>
+    <li><input type="checkbox" data-topic="Exception Handling">Exception Handling</li>
+    <li><input type="checkbox" data-topic="Libraries (requests, random, etc)">Libraries</li>
   </ul>
+  <button onclick="resetProgress()">Reset Progress</button>
 
   <script>
-    function toggleComplete(checkbox) {
-      const listItem = checkbox.parentElement;
-      if (checkbox.checked) {
-        listItem.classList.add('completed');
-      } else {
-        listItem.classList.remove('completed');
-      }
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const trackerKey = "python_tracker_progress";
+
+    function loadProgress() {
+      const saved = JSON.parse(localStorage.getItem(trackerKey)) || {};
+      checkboxes.forEach(cb => {
+        const topic = cb.getAttribute('data-topic');
+        if (saved[topic]) {
+          cb.checked = true;
+          cb.parentElement.classList.add('done');
+        }
+      });
     }
+
+    function saveProgress() {
+      const progress = {};
+      checkboxes.forEach(cb => {
+        const topic = cb.getAttribute('data-topic');
+        progress[topic] = cb.checked;
+      });
+      localStorage.setItem(trackerKey, JSON.stringify(progress));
+    }
+
+    checkboxes.forEach(cb => {
+      cb.addEventListener('change', () => {
+        if (cb.checked) cb.parentElement.classList.add('done');
+        else cb.parentElement.classList.remove('done');
+        saveProgress();
+      });
+    });
+
+    function resetProgress() {
+      localStorage.removeItem(trackerKey);
+      checkboxes.forEach(cb => {
+        cb.checked = false;
+        cb.parentElement.classList.remove('done');
+      });
+    }
+
+    loadProgress();
   </script>
 </body>
 </html>
