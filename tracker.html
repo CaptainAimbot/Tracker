@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checklist</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .checklist {
+      list-style-type: none;
+      padding: 0;
+    }
+    .checklist li {
+      margin: 10px 0;
+    }
+    .completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+  <h1>Learning Tracker</h1>
+  <ul class="checklist" id="checklist">
+    <li><input type="checkbox" onclick="toggleComplete(this)"> HTML Basics</li>
+    <li><input type="checkbox" onclick="toggleComplete(this)"> CSS Styling</li>
+    <li><input type="checkbox" onclick="toggleComplete(this)"> JavaScript Fundamentals</li>
+    <li><input type="checkbox" onclick="toggleComplete(this)"> React Components</li>
+  </ul>
+
+  <script>
+    function toggleComplete(checkbox) {
+      const listItem = checkbox.parentElement;
+      if (checkbox.checked) {
+        listItem.classList.add('completed');
+      } else {
+        listItem.classList.remove('completed');
+      }
+    }
+  </script>
+</body>
+</html>
